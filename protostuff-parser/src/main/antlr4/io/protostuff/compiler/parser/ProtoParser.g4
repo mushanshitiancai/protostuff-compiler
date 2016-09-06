@@ -41,10 +41,13 @@ enumName
     : ident
     ;
 enumField
-    : enumFieldName ASSIGN INTEGER_VALUE fieldOptions? SEMICOLON
+    : enumFieldName ASSIGN enumFieldValue fieldOptions? SEMICOLON
     ;
 enumFieldName
     : ident
+    ;
+enumFieldValue
+    : INTEGER_VALUE
     ;
 extendBlock
     : EXTEND typeReference LCURLY extendBlockEntry* RCURLY SEMICOLON?
@@ -80,7 +83,8 @@ messageBlock
         | groupBlock
         | oneof
         | map
-        | reserved)*
+        | reservedFieldRanges
+        | reservedFieldNames)*
    RCURLY SEMICOLON?
     ;
 messageName
@@ -93,10 +97,10 @@ oneofName
     : ident
     ;
 oneofField
-    : typeReference fieldName ASSIGN INTEGER_VALUE fieldOptions? SEMICOLON
+    : typeReference fieldName ASSIGN tag fieldOptions? SEMICOLON
     ;
 oneofGroup
-    : GROUP fieldName ASSIGN INTEGER_VALUE LCURLY
+    : GROUP fieldName ASSIGN tag LCURLY
         (field
         | optionEntry
         | messageBlock
@@ -130,7 +134,7 @@ tag
     : INTEGER_VALUE
     ;
 groupBlock
-    : fieldModifier GROUP groupName ASSIGN INTEGER_VALUE LCURLY
+    : fieldModifier GROUP groupName ASSIGN tag LCURLY
         (field
         | optionEntry
         | messageBlock
@@ -144,25 +148,28 @@ groupName
     : ident
     ;
 extensions
-    : EXTENSIONS ranges SEMICOLON
-    ;
-ranges
-    : range (COMMA range)*
+    : EXTENSIONS range (COMMA range)* SEMICOLON
     ;
 range
-    : INTEGER_VALUE ( TO ( INTEGER_VALUE | MAX ) )?
+    : rangeFrom ( TO ( rangeTo | MAX ) )?
     ;
-reserved
-    : RESERVED (ranges | fieldNames) SEMICOLON
+rangeFrom
+    : INTEGER_VALUE
     ;
-fieldNames
-    : fieldNameString (COMMA fieldNameString)*
+rangeTo
+    : INTEGER_VALUE
     ;
-fieldNameString
+reservedFieldRanges
+    : RESERVED range (COMMA range)* SEMICOLON
+    ;
+reservedFieldNames
+    : RESERVED reservedFieldName (COMMA reservedFieldName)* SEMICOLON
+    ;
+reservedFieldName
     : STRING_VALUE
     ;
 field
-    : fieldModifier? typeReference fieldName ASSIGN INTEGER_VALUE fieldOptions? SEMICOLON
+    : fieldModifier? typeReference fieldName ASSIGN tag fieldOptions? SEMICOLON
     ;
 fieldName
     : ident
