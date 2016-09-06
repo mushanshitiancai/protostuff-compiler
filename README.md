@@ -3,6 +3,13 @@ Protocol Buffers parser and code generator
 
 [![Build Status](https://travis-ci.org/protostuff/protostuff-compiler.svg?branch=master)](https://travis-ci.org/protostuff/protostuff-compiler)
 
+说明
+-----
+
+修改了模板，支持从proto生成POJO，同时如果添加add_tag参数，会添加protostuff的Tag注解和fastjson的JSONField注解。
+
+例子：java -jar protostuff-cli.jar -g java -o 。/ Service.proto
+
 Usage
 -----
 
