@@ -9,17 +9,19 @@ package <enum.proto.javaPackage>;
 >>
 
 enum_body(enum) ::= <<
-public enum <enum.javaName> {
+<if(!enum.nested)><enum:generator_annotation()><endif>
+public enum <enum.javaName> implements io.protostuff.EnumLite\<<enum.javaName>\>{
 
     <enum.constants:enum_constant(); separator=",\n"><if(first(enum.constants))>,<endif>
     UNRECOGNIZED(-1);
 
     private int value;
 
-    <enum.javaName>(int n) {
+    private <enum.javaName>(int n) {
         this.value = n;
     }
 
+    @Override
     public int getNumber() {
         if (value == -1) {
           throw new java.lang.IllegalStateException(

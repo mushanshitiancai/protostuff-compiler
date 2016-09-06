@@ -1,0 +1,9 @@
+message Person {
+    required string name = 1;
+    required string IsMan = 10;
+    repeated Person friend = 2;
+}
+
+enum E {
+    CompanyFolder = 1;
+}

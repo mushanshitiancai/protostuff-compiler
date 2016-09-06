@@ -37,6 +37,7 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
     public static final String VERSION = "version";
     public static final String HELP = "help";
     public static final String PROTO_PATH = "proto_path";
+    public static final String ADD_TAG = "add_tag";
     private static final Logger LOGGER = LoggerFactory.getLogger(ProtostuffCompilerCLI.class);
 
     public static void main(String[] args) {
@@ -99,6 +100,11 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
                 .numberOfArgs(1)
                 .desc("[st4] Specify full class name of an extensions provider for st4 compiler")
                 .build());
+        options.addOption(Option.builder()
+                .hasArg(false)
+                .longOpt(ADD_TAG)
+                .desc("添加@TAG和@JSONField")
+                .build());
         CommandLineParser parser = new DefaultParser();
         ImmutableModuleConfiguration.Builder builder = ImmutableModuleConfiguration.builder();
         builder.name("main");
@@ -136,6 +142,10 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
             }
             if (cmd.hasOption(EXTENSIONS)) {
                 builder.putOptions(CompilerModule.EXTENSIONS_OPTION, cmd.getOptionValue(EXTENSIONS));
+            }
+            if(cmd.hasOption(ADD_TAG)){
+                builder.putOptions(CompilerModule.JAVA_OPTION_ADD_TAG,"true");
+                builder.putOptions("hehe","1");
             }
             List<Path> includePaths = new ArrayList<>();
             if (cmd.hasOption(PROTO_PATH)) {

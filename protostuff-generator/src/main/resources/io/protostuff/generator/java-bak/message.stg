@@ -9,19 +9,67 @@ import "io/protostuff/generator/java/message-base.stg"
 
 message(message) ::= <<
 package <message.proto.javaPackage>;
-<if(message.proto.module.options.java_add_tag)>
-import com.alibaba.fastjson.annotation.JSONField;
-import io.protostuff.Tag;
-<endif>
-import lombok.Data;
 
 <message:message_body()>
 >>
 
 message_body(message) ::= <<
-@Data
-public <if(message.nested)>static <endif>class <message.javaName> implements java.io.Serializable{
-    <message.fields:field_declaration(message); separator="\n">
+<if(!message.nested)><message:generator_annotation()><endif>
+public <if(message.nested)>static <endif>final class <message.javaName>
+        implements io.protostuff.Message\<<message.javaName>\>{
+
+    private static final <message.javaName> DEFAULT_INSTANCE = newBuilder().build();
+
+    <message.fields:field_declaration(); separator="\n">
+    private boolean __merge_lock = false;
+    <message.javaBitFieldNames:message_bit_field(); separator="\n">
+    <message.oneofs:oneof_fields(); separator="\n">
+
+    private <message.javaName>() {
+        <message.fields:field_initializer(); separator="\n">
+    }
+
+    private <message.javaName>(Builder builder) {
+        __merge_lock = true;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static <message.javaName> getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static io.protostuff.Schema\<<message.javaName>\> getSchema()
+    {
+    	return Schema.INSTANCE;
+    }
+
+    <message.fields:field_accessors(); separator="\n">
+
+    <message.oneofs:oneof_case(); separator="\n">
+
+    @Override
+    public io.protostuff.Schema\<<message.javaName>\> cachedSchema() {
+        return Schema.INSTANCE;
+    }
+
+    <equals(message=message, builder=false)>
+
+    <message:hash_code()>
+
+    <message:to_string()>
+
+    <message:schema()>
+
+    <message:builder()>
+
+    <message.messages:message_body(); separator="\n">
+    
+    <message.enums:enum_body(); separator="\n">
+
+    <message.oneofs:one_of(); separator="\n">
 }
 >>
 

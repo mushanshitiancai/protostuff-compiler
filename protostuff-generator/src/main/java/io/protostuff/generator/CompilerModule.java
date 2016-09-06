@@ -3,13 +3,10 @@ package io.protostuff.generator;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.MapBinder;
 import io.protostuff.generator.html.HtmlGenerator;
 import io.protostuff.generator.java.JavaExtensionProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.FileOutputStream;
@@ -35,6 +32,9 @@ public class CompilerModule extends AbstractModule {
     public static final String JAVA_COMPILER = "java";
     public static final String ST4_COMPILER = "st4";
     public static final String HTML_COMPILER = "html";
+
+    public static final String JAVA_OPTION_ADD_TAG = "java_add_tag";
+
 
     private static <T> T instantiate(final String className, final Class<T> type) {
         try {

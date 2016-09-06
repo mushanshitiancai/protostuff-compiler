@@ -62,7 +62,7 @@
         <module>protostuff-generator</module>
         <module>protostuff-cli</module>
         <module>protostuff-maven-plugin</module>
-        <module>protostuff-it</module>
+        <!--<module>protostuff-it</module>-->
     </modules>
 
     <build>

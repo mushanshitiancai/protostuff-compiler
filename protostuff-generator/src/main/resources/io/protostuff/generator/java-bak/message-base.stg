@@ -1,10 +1,6 @@
 delimiters "<", ">"
 
-field_declaration(field,message) ::= <<
-<if(message.proto.module.options.java_add_tag)>
-@Tag(<field.tag>)
-@JSONField(name = "M<field.tag>")
-<endif>
+field_declaration(field) ::= <<
 <if(field.oneofPart)>
 <elseif(field.map)>
 private <field.javaMapType> <field.javaName>;

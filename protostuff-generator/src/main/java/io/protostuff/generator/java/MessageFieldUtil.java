@@ -40,7 +40,8 @@ public class MessageFieldUtil {
 
     public static String getFieldName(Field field) {
         String name = field.getName();
-        String formattedName = Formatter.toCamelCase(name);
+//        String formattedName = Formatter.toCamelCase(name);
+        String formattedName = name;
         if (isReservedKeyword(formattedName)) {
             return formattedName + '_';
         }
