@@ -6,7 +6,7 @@ Protocol Buffers parser and code generator
 说明
 -----
 
-修改了模板，支持从proto生成POJO，同时如果添加add_tag参数，会添加protostuff的Tag注解和fastjson的JSONField注解。
+1. 修改了模板，支持从proto生成POJO，同时如果添加add_tag参数，会添加protostuff的Tag注解和fastjson的JSONField注解。
 
 例子：
 
@@ -16,6 +16,11 @@ java -jar protostuff-cli.jar -g java -o ./ Service.proto
 java -jar protostuff-cli.jar -g java --add_tag -o ./ Service.proto
 ```
 
+2. 添加选项enum_to_int,如果设置，则吧proto中的枚举字段编译为int
+   
+```
+java -jar protostuff-cli.jar -g java --enum_to_int -o ./ Service.proto
+```
 
 Usage
 -----

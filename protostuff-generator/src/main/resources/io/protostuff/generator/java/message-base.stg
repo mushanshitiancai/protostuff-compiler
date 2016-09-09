@@ -15,7 +15,7 @@ private java.util.List\<Integer> <field.javaName>;
 private <field.javaRepeatedType> <field.javaName>;
 <endif>
 <elseif(field.type.enum)>
-private int <field.javaName>;
+private <if(message.proto.module.options.java_enum_to_int)>int<else><field.javaType><endif> <field.javaName>;
 <else>
 private <field.javaType> <field.javaName>;
 <endif>

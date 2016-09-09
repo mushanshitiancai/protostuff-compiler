@@ -39,6 +39,7 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
     public static final String HELP = "help";
     public static final String PROTO_PATH = "proto_path";
     public static final String ADD_TAG = "add_tag";
+    public static final String ENUM_TO_INT = "enum_to_int";
     private static final Logger LOGGER = LoggerFactory.getLogger(ProtostuffCompilerCLI.class);
 
     public static void main(String[] args) {
@@ -106,6 +107,11 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
                 .longOpt(ADD_TAG)
                 .desc("添加@TAG和@JSONField")
                 .build());
+        options.addOption(Option.builder()
+                .hasArg(false)
+                .longOpt(ENUM_TO_INT)
+                .desc("把enum转换为int")
+                .build());
         CommandLineParser parser = new DefaultParser();
         ImmutableModuleConfiguration.Builder builder = ImmutableModuleConfiguration.builder();
         builder.name("main");
@@ -147,7 +153,9 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
             }
             if(cmd.hasOption(ADD_TAG)){
                 builder.putOptions(CompilerModule.JAVA_OPTION_ADD_TAG,"true");
-                builder.putOptions("hehe","1");
+            }
+            if(cmd.hasOption(ENUM_TO_INT)){
+                builder.putOptions(CompilerModule.JAVA_OPTION_ENUM_TO_INT,"true");
             }
             List<Path> includePaths = new ArrayList<>();
             if (cmd.hasOption(PROTO_PATH)) {

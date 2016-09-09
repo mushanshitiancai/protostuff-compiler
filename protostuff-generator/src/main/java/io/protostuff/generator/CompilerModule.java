@@ -16,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -36,7 +35,8 @@ public class CompilerModule extends AbstractModule {
     public static final String ST4_COMPILER = "st4";
     public static final String HTML_COMPILER = "html";
 
-    public static final String JAVA_OPTION_ADD_TAG = "java_add_tag";
+    public static final String JAVA_OPTION_ADD_TAG     = "java_add_tag";
+    public static final String JAVA_OPTION_ENUM_TO_INT = "java_enum_to_int";
 
 
     private static <T> T instantiate(final String className, final Class<T> type) {
