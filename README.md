@@ -22,6 +22,27 @@ java -jar protostuff-cli.jar -g java --add_tag -o ./ Service.proto
 java -jar protostuff-cli.jar -g java --enum_to_int -o ./ Service.proto
 ```
 
+2016年09月28日
+
+1. 添加选项--java_template，支持指定java生成模式的模板，java生成模板的模板可以参考java-template-demo
+
+例子：
+
+```
+java_template="/Users/mazhibin/project/template/java/main.stg"
+java -jar protostuff-cli.jar -g java_template ${java_template} --java -o ./ Service.proto
+```
+
+2. 添加选项--json_config，支持指定一个json字符串作为参数，这些参数会被传入string template4 模板中：
+
+```
+java_template="/Users/mazhibin/project/xxx/template/java-bak/main.stg"
+other_config='{"java_add_javadoc":true}'
+java -jar  protostuff-cli-2.0.0-alpha26-SNAPSHOT-jar-with-dependencies.jar -g java -java_template ${java_template} -o ./ -json_config ${other_config} in.proto%     
+```
+
+3. 移除--add_tag和--enum_to_int参数，改为从--json_config传入
+
 Usage
 -----
 

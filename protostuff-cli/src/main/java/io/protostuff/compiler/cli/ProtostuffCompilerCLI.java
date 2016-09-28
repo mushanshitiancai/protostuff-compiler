@@ -1,5 +1,7 @@
 package io.protostuff.compiler.cli;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.ImmutableMap;
 import io.protostuff.compiler.model.ImmutableModuleConfiguration;
 import io.protostuff.compiler.model.ModuleConfiguration;
@@ -32,14 +34,15 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
     public static final String __VERSION = ProtostuffCompilerCLI.class.getPackage().getImplementationVersion();
     public static final String GENERATOR = "generator";
     public static final String TEMPLATE = "template";
+    public static final String JAVA_TEMPLATE = "java_template";
     public static final String EXTENSIONS = "extensions";
     public static final String OUTPUT = "output";
     public static final String DEBUG = "debug";
     public static final String VERSION = "version";
     public static final String HELP = "help";
     public static final String PROTO_PATH = "proto_path";
-    public static final String ADD_TAG = "add_tag";
-    public static final String ENUM_TO_INT = "enum_to_int";
+    public static final String JSON_CONFIG = "json_config";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ProtostuffCompilerCLI.class);
 
     public static void main(String[] args) {
@@ -103,14 +106,16 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
                 .desc("[st4] Specify full class name of an extensions provider for st4 compiler")
                 .build());
         options.addOption(Option.builder()
-                .hasArg(false)
-                .longOpt(ADD_TAG)
-                .desc("添加@TAG和@JSONField")
+                .longOpt(JAVA_TEMPLATE)
+                .argName("java_template")
+                .numberOfArgs(1)
+                .desc("[java] Specify a template for java compiler")
                 .build());
         options.addOption(Option.builder()
-                .hasArg(false)
-                .longOpt(ENUM_TO_INT)
-                .desc("把enum转换为int")
+                .longOpt(JSON_CONFIG)
+                .argName("json_config")
+                .numberOfArgs(1)
+                .desc("other config by json string format")
                 .build());
         CommandLineParser parser = new DefaultParser();
         ImmutableModuleConfiguration.Builder builder = ImmutableModuleConfiguration.builder();
@@ -151,11 +156,16 @@ public class ProtostuffCompilerCLI extends ProtostuffCompiler {
             if (cmd.hasOption(EXTENSIONS)) {
                 builder.putOptions(CompilerModule.EXTENSIONS_OPTION, cmd.getOptionValue(EXTENSIONS));
             }
-            if(cmd.hasOption(ADD_TAG)){
-                builder.putOptions(CompilerModule.JAVA_OPTION_ADD_TAG,"true");
+            if(cmd.hasOption(JAVA_TEMPLATE)){
+                CompilerModule.JAVA_COMPILER_TEMPLATE = cmd.getOptionValue(JAVA_TEMPLATE);
             }
-            if(cmd.hasOption(ENUM_TO_INT)){
-                builder.putOptions(CompilerModule.JAVA_OPTION_ENUM_TO_INT,"true");
+            if(cmd.hasOption(JSON_CONFIG)){
+                String jsonString = cmd.getOptionValue(JSON_CONFIG);
+                JSONObject jsonObject = JSON.parseObject(jsonString);
+                for (String key : jsonObject.keySet()) {
+                    String value = jsonObject.getString(key);
+                    builder.putOptions(key,value);
+                }
             }
             List<Path> includePaths = new ArrayList<>();
             if (cmd.hasOption(PROTO_PATH)) {

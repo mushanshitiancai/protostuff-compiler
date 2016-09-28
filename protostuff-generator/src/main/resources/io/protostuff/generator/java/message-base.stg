@@ -1,6 +1,7 @@
 delimiters "<", ">"
 
-field_declaration(field,message) ::= <<
+field_declaration(field,message) ::= <%
+<field_javadoc(field)>
 <if(message.proto.module.options.java_add_tag)>
 @Tag(<field.tag>)
 @JSONField(name = "M<field.tag>")
@@ -19,6 +20,13 @@ private <if(message.proto.module.options.java_enum_to_int)>int<else><field.javaT
 <else>
 private <field.javaType> <field.javaName>;
 <endif>
+%>
+
+field_javadoc(field) ::= <<
+/**
+ * <field.commentLines:{x|<x>};separator=" ">
+ */
+
 >>
 
 oneof_case(oneOf) ::= <<

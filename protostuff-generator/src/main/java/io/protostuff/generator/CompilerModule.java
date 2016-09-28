@@ -26,7 +26,7 @@ import static com.google.inject.multibindings.MapBinder.newMapBinder;
  */
 public class CompilerModule extends AbstractModule {
 
-    public static final String JAVA_COMPILER_TEMPLATE = "io/protostuff/generator/java/main.stg";
+    public static String JAVA_COMPILER_TEMPLATE = "io/protostuff/generator/java/main.stg";
 
     public static final String TEMPLATES_OPTION = "templates";
     public static final String EXTENSIONS_OPTION = "extensions";
@@ -34,10 +34,6 @@ public class CompilerModule extends AbstractModule {
     public static final String JAVA_COMPILER = "java";
     public static final String ST4_COMPILER = "st4";
     public static final String HTML_COMPILER = "html";
-
-    public static final String JAVA_OPTION_ADD_TAG     = "java_add_tag";
-    public static final String JAVA_OPTION_ENUM_TO_INT = "java_enum_to_int";
-
 
     private static <T> T instantiate(final String className, final Class<T> type) {
         try {
